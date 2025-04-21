@@ -1,0 +1,52 @@
+<div class="task-edit-container">
+  <h2>ערוך משימה</h2>
+
+  <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+    <!-- כותרת -->
+    <div>
+      <label for="taskName">כותרת</label>
+      <input matInput id="taskName" formControlName="taskName" />
+
+      @if (taskForm.get('taskName')?.hasError('required') && taskForm.get('taskName')?.touched) {
+      <mat-error>
+        כותרת היא שדה חובה
+      </mat-error>
+      }
+
+      @if (taskForm.get('taskName')?.hasError('minlength') && taskForm.get('taskName')?.touched) {
+      <mat-error>
+        הכותרת צריכה להכיל לפחות 3 תווים
+      </mat-error>
+      }
+
+      @if (taskForm.get('taskName')?.hasError('pattern') && taskForm.get('taskName')?.touched) {
+      <mat-error>
+        הכותרת לא יכולה להכיל רק רווחים
+      </mat-error>
+      }
+    </div>
+
+    <!-- תיאור -->
+    <div>
+      <label for="description">תיאור</label>
+      <textarea matInput id="description" formControlName="description"></textarea>
+    </div>
+
+    <!-- תאריך יעד -->
+    <div>
+      <label for="dueDate">תאריך יעד</label>
+      <input matInput id="dueDate" formControlName="dueDate" [matDatepicker]="picker" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      @if (taskForm.get('dueDate')?.hasError('required') && taskForm.get('dueDate')?.touched) {
+      <mat-error>
+        תאריך הוא שדה חובה
+      </mat-error>
+      }
+    </div>
+
+    <!-- כפתור שמירה -->
+    <button mat-button type="submit" color="primary" [disabled]="taskForm.invalid">שמור</button>
+  </form>
+</div>

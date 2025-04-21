@@ -1,0 +1,50 @@
+<div class="task-table-container">
+  <div class="search-wrapper">
+    <input type="text" [(ngModel)]="searchTitle" (ngModelChange)="filterTasks()" placeholder="חיפוש לפי כותרת"
+      class="search-input" />
+  </div>
+
+  <div class="task-table-header">
+    <span>כותרת</span>
+    <span>תיאור</span>
+    <span>תאריך יעד</span>
+    <span>פעולות</span>
+  </div>
+
+  @for (task of tasks; track task.id) {
+  <div class="task-row">
+    <!-- כותרת -->
+    <div class="task-cell">
+      <span>{{ task.title }}</span>
+    </div>
+
+    <!-- תיאור -->
+    <div class="task-cell">
+      <span>{{ task.description }}</span>
+    </div>
+
+    <!-- תאריך -->
+    <div class="task-cell">
+      <span>{{ task.dueDate | date: 'dd/MM/yyyy' }}</span>
+    </div>
+
+    <!-- פעולות -->
+    <div class="task-cell actions-cell">
+      <button mat-icon-button color="primary" [routerLink]="['/edit', task.id]">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button color="warn" (click)="deleteTask(task.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      @if (!task.isCompleted) {
+      <button mat-icon-button color="primary" (click)="markTaskAsCompleted(task)" class="complete">
+        <mat-icon>check_box_outline_blank</mat-icon>
+        <span>משימה הושלמה?</span>
+      </button>
+      }
+    </div>
+  </div>
+  }
+</div>

@@ -1,0 +1,100 @@
+.task-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+  direction: rtl;
+}
+
+.task-table-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.task-table-header span {
+  flex: 1;
+  text-align: center;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  gap: 1rem;
+  background-color: white;
+  transition: background-color 0.3s ease;
+}
+
+.task-row.edit-mode {
+  background-color: #f9f9f9;
+}
+
+.task-cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-cell textarea,
+.task-cell input {
+  width: 100%;
+  direction: rtl;
+}
+
+.readonly-date {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.actions-cell {
+  justify-content: center;
+  gap: 0.5rem;
+}
+button span {
+  display: none; /* החבאת הטקסט */
+}
+
+/* כשתריחף על הכפתור, הטקסט יופיע */
+button:hover span {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #555; 
+}
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  direction: rtl;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 4px rgba(63, 81, 181, 0.3);
+}

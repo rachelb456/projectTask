@@ -1,0 +1,77 @@
+@import '../../../styles.css';
+.mat-toolbar {
+    direction: rtl; 
+  }
+  
+  .toolbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  /* סידור הלינקים במרכז */
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+  
+  nav button {
+    margin: 0 15px; /* מרווח בין הלינקים */
+    padding: 10px 15px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  /* הוספת שינוי צבע והבהרה על לינק */
+  nav button:hover {
+    background-color: #f5f5f5; /* צבע רקע כשמעלים את העכבר */
+    border-color: #1976d2; /* קו תחתון כחול */
+  }
+  
+  nav button mat-icon {
+    margin-left: 5px;
+  }
+  
+  nav button span {
+    margin-right: 5px;
+  }
+  
+  /* שינוי צבע עבור לינק פעיל */
+  button.active {
+    background-color: #1976d2; /* צבע רקע כחול עבור לינק פעיל */
+    color: white;
+    border-color: #1976d2;
+  }
+  
+  button.active mat-icon {
+    color: white;
+  }
+  @keyframes iconBounce {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-4px); }
+    100% { transform: translateY(0); }
+  }
+  
+  nav button mat-icon {
+    margin-left: 5px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  /* כשעוברים עם העכבר - הפעלת האנימציה */
+  nav button:hover mat-icon {
+    animation: iconBounce 0.6s ease;
+    color: #1976d2;
+  }
+  

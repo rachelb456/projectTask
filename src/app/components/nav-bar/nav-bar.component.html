@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <div class="toolbar-container">
+    <div class="logo-container">
+      <span>ניהול משימות</span>
+    </div>
+
+    <nav>
+      <button mat-button routerLink="/" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        <span>דף הבית</span>
+      </button>
+      <button mat-button routerLink="/add-task" routerLinkActive="active">
+        <mat-icon>add_task</mat-icon>
+        <span>הוספת משימה</span>
+      </button>
+      <button mat-button routerLink="/tasks" routerLinkActive="active">
+        <mat-icon>list_alt</mat-icon>
+        <span>רשימת משימות</span>
+      </button>
+    </nav>
+  </div>
+</mat-toolbar>

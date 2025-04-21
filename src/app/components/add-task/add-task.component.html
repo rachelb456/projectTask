@@ -1,0 +1,54 @@
+<div class="add-task-container">
+  <mat-card>
+    <h2 class="task-title">הוספת משימה חדשה</h2>
+
+    <mat-card-content>
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>כותרת</mat-label>
+          <input matInput formControlName="taskName" required>
+
+          @if (taskForm.get('taskName')?.hasError('required') && (taskForm.get('taskName')?.dirty ||
+          taskForm.get('taskName')?.touched)) {
+          <mat-error>שדה חובה</mat-error>
+          }
+
+          @if (taskForm.get('taskName')?.hasError('pattern') && !taskForm.get('taskName')?.hasError('required') &&
+          (taskForm.get('taskName')?.dirty || taskForm.get('taskName')?.touched)) {
+          <mat-error>כותרת לא יכולה להכיל רק רווחים</mat-error>
+          }
+
+          @if (taskForm.get('taskName')?.hasError('minlength') && !taskForm.get('taskName')?.hasError('required') &&
+          !taskForm.get('taskName')?.hasError('pattern') && (taskForm.get('taskName')?.dirty ||
+          taskForm.get('taskName')?.touched)) {
+          <mat-error>יש להזין לפחות 3 תווים</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>תיאור</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>תאריך יעד</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dueDate" [min]="minDate" required>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+
+          @if (taskForm.get('dueDate')?.hasError('required')) {
+          <mat-error>שדה חובה</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">
+            אישור
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
