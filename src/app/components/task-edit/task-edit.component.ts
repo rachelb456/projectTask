@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Task } from '../../classes/task';
 
 @Component({
   selector: 'app-task-edit',
@@ -30,9 +31,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class TaskEditComponent {
   taskForm: FormGroup;
-  taskId!: number;
-  minDate: Date = new Date();
-  iscompleted: boolean = false
+  taskId?: number;
+  isEditMode = false;
+  minDate = new Date();
+  iscompleted=false
+  newTask:Task=new Task(0,"",new Date(),"",false)
 
   constructor(
     private fb: FormBuilder,
@@ -42,35 +45,33 @@ export class TaskEditComponent {
     private alert: AlertService
   ) {
     this.taskForm = this.fb.group({
-      taskName: ['', [Validators.required, Validators.pattern(/^(?!\s*$).*$/), Validators.minLength(3)]],
+      taskName: ['', [Validators.required, Validators.pattern(/\S+/), Validators.minLength(3)]],
       description: [''],
-      dueDate: ['', Validators.required],
+      dueDate: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-
-    debugger
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.taskId = +id;
-        console.log('id', this.taskId);
-
-        this.loadTask();
-      }
-    });
+    //בדיקה אם הגיעה משימה לעריכה או הוספת משימה
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode = true;
+      this.taskId = +id;
+      this.loadTask();
+    }
   }
-
+  
+//טעינת המשימה לעריכה
   loadTask() {
-    this.taskService.getTaskById(this.taskId).subscribe({
+    this.taskService.getTaskById(this.taskId!).subscribe({
       next: (task) => {
         this.iscompleted = task.isCompleted
         this.taskForm.patchValue({
           taskName: task.title,
           description: task.description,
           dueDate: task.dueDate,
-          isCompleted: task.isCompleted
+          isCompleted:this.iscompleted
+          
         });
       },
       error: () => {
@@ -80,30 +81,47 @@ export class TaskEditComponent {
     });
   }
 
-  saveTask() {
-    debugger
+  onSubmit() {
     if (this.taskForm.invalid) {
       this.alert.showError('אנא תקן/י את השדות השגויים');
       return;
     }
 
-    const updatedTask = {
-      id: this.taskId,
-      title: this.taskForm.get('taskName')?.value,
-      description: this.taskForm.get('description')?.value,
-      dueDate: this.taskForm.get('dueDate')?.value,
-      isCompleted: this.iscompleted
-
+    const formValues = this.taskForm.value;
+    const taskData = {
+      title: formValues.taskName,
+      description: formValues.description,
+      dueDate: formValues.dueDate,
     };
-
-    this.taskService.updateTask(updatedTask).subscribe({
-      next: () => {
-        this.alert.showSuccess('המשימה עודכנה בהצלחה');
-        this.router.navigate(['/tasks']);
-      },
-      error: () => {
-        this.alert.showError('שגיאה בעדכון המשימה');
-      }
-    });
+//אם המשימה היא עריכה 
+    if (this.isEditMode) {
+      this.taskService.updateTask({ id: this.taskId!, isCompleted: this.iscompleted, ...taskData }).subscribe({
+        next: () => {
+          this.alert.showSuccess('המשימה עודכנה בהצלחה');
+          this.router.navigate(['/tasks']);
+        },
+        error: () => {
+          this.alert.showError('שגיאה בעדכון המשימה');
+        }
+      });
+    } 
+    //או משימה להוספה
+    else {
+      this.newTask = {
+        ...this.newTask,
+        title: taskData.title,
+        description: taskData.description,
+        dueDate: new Date(taskData.dueDate)
+      };
+      this.taskService.addTask(this.newTask ).subscribe({
+        next: () => {
+          this.alert.showSuccess('המשימה נוספה בהצלחה');
+          this.router.navigate(['/tasks']);
+        },
+        error: () => {
+          this.alert.showError('שגיאה בהוספת משימה');
+        }
+      });
+    }
   }
 }

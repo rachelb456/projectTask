@@ -18,7 +18,17 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatInputModule, FormsModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, RouterModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    RouterModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
@@ -26,13 +36,15 @@ export class TaskListComponent {
   tasks: Task[] = [];
   searchTitle: string = '';
 
-  constructor(public taskService: TasksServiceService, public alert: AlertService) { }
+  constructor(private taskService: TasksServiceService, private alert: AlertService) { }
 
   ngOnInit() {
     this.loadTasks();
   }
 
+  //טעינת המשימות
   loadTasks() {
+
     this.taskService.getTasks().subscribe({
       next: (data) => {
         this.tasks = data;
@@ -42,7 +54,10 @@ export class TaskListComponent {
     });
   }
 
+  //סינון המשימות לפי כותרת
+  //שליחה לחיפוש בשרת
   filterTasks() {
+
     const search = this.searchTitle.trim();
     this.taskService.getTasks(search).subscribe({
       next: (tasks) => {
@@ -51,12 +66,14 @@ export class TaskListComponent {
       error: (err) => console.error('שגיאה בחיפוש משימות:', err),
     });
   }
+
+  //סימון משימה שהושלמה
   markTaskAsCompleted(task: Task) {
-    debugger
+
     task.isCompleted = true
     this.taskService.updateTask(task).subscribe({
       next: () => {
-        this.alert.showSuccess('המשימה עודכנה בהצלחה');
+        this.alert.showSuccess('המשימה הושלמה בהצלחה');
         this.loadTasks(); // טוען מחדש את המשימות לאחר העדכון
       },
       error: () => {
@@ -65,7 +82,9 @@ export class TaskListComponent {
     });
   }
 
+  //מחיקת משימה
   deleteTask(id: number) {
+
     this.alert.confirmDelete('? האם את/ה בטוח/ה שברצונך למחוק את המשימה').then((confirmed) => {
       if (confirmed) {
         this.taskService.deleteTask(id).subscribe({

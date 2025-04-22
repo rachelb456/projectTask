@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AddTaskComponent } from './components/add-task/add-task.component';
+
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 @Component({
@@ -8,7 +8,6 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
   standalone: true,
   imports: [
     RouterOutlet,
-    AddTaskComponent,
     NavBarComponent
   ],
   templateUrl: './app.component.html',

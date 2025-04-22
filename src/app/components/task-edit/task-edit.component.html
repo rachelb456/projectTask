@@ -1,7 +1,8 @@
 <div class="task-edit-container">
-  <h2>ערוך משימה</h2>
+  <h2>{{ isEditMode ? 'עריכת משימה' : 'הוספת משימה חדשה' }}</h2>
 
-  <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+
     <!-- כותרת -->
     <div>
       <label for="taskName">כותרת</label>
@@ -35,7 +36,7 @@
     <!-- תאריך יעד -->
     <div>
       <label for="dueDate">תאריך יעד</label>
-      <input matInput id="dueDate" formControlName="dueDate" [matDatepicker]="picker" />
+      <input matInput id="dueDate" formControlName="dueDate" [matDatepicker]="picker" [min]="minDate"/>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
 
@@ -47,6 +48,8 @@
     </div>
 
     <!-- כפתור שמירה -->
-    <button mat-button type="submit" color="primary" [disabled]="taskForm.invalid">שמור</button>
+    <button mat-button type="submit" color="primary" [disabled]="taskForm.invalid">
+      {{ isEditMode ? 'שמור שינויים' : 'הוסף משימה' }}
+    </button>
   </form>
 </div>
